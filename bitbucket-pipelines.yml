@@ -10,10 +10,45 @@ image: atlassian/default-image:2
 
 pipelines:
   default:
-    - step:
-        script:
-          - docker login --username <DOCKER_HUB_ID> --password <DOCKER_HUB_PASSWORD>
-          - docker build -t <DOCKER_HUB_NAME>:latest .
-          - docker push <DOCKER_HUB_NAME>:latest
-options:
-  docker: true
+    - parallel:
+        - step:
+            name: Build and Test
+            script:
+              - IMAGE_NAME=mod5-ajax-js
+              - docker build . --file Dockerfile --tag ${IMAGE_NAME}
+            services:
+              - docker
+            caches:
+              - docker
+        - step:
+            name: Lint the Dockerfile
+            image: hadolint/hadolint:latest-debian
+            script:
+              - hadolint Dockerfile
+  branches:
+    master:
+      - step:
+          name: Build and Test
+          script:
+            - IMAGE_NAME=mod5-ajax-js
+            - docker build . --file Dockerfile --tag ${IMAGE_NAME}
+            - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
+          services:
+            - docker
+          caches:
+            - docker
+          artifacts:
+            - "*.tar"
+      - step:
+          name: Deploy to Production
+          deployment: Production
+          script:
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            - IMAGE_NAME=mod5-ajax-js
+            - docker load --input "${IMAGE_NAME}.tar"
+            - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
+            - IMAGE=huseyinorer/${IMAGE_NAME}
+            - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
+            - docker push "${IMAGE}:${VERSION}"
+          services:
+            - docker
