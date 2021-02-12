@@ -1,3 +1,3 @@
 FROM nginx:1.18.0
-COPY ./var/www/html
+COPY /mod5-Ajax-Js .
 MAINTAINER Hüseyin Örer <huseyinorer@yandex.com>
