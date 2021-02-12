@@ -12,7 +12,7 @@ pipelines:
   default:
     - step:
         script:
-          - docker login -u <DOCKER_HUB_ID> -p <DOCKER_HUB_PASSWORD>
+          - docker login --username <DOCKER_HUB_ID> --password <DOCKER_HUB_PASSWORD>
           - docker build -t <DOCKER_HUB_NAME>:latest .
           - docker push <DOCKER_HUB_NAME>:latest
 options:
