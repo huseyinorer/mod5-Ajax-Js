@@ -14,7 +14,7 @@ pipelines:
         - step:
             name: Build and Test
             script:
-              - IMAGE_NAME=mod5-ajax-js
+              - IMAGE_NAME=mod5-ajax-js:latest
               - docker build . --file Dockerfile --tag ${IMAGE_NAME}
             services:
               - docker
@@ -30,7 +30,7 @@ pipelines:
       - step:
           name: Build and Test
           script:
-            - IMAGE_NAME=mod5-ajax-js
+            - IMAGE_NAME=mod5-ajax-js:latest
             - docker build . --file Dockerfile --tag ${IMAGE_NAME}
             - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
           services:
@@ -44,7 +44,7 @@ pipelines:
           deployment: Production
           script:
             - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-            - IMAGE_NAME=mod5-ajax-js
+            - IMAGE_NAME=mod5-ajax-js:latest
             - docker load --input "${IMAGE_NAME}.tar"
             - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
             - IMAGE=huseyinorer/${IMAGE_NAME}
