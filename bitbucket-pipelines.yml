@@ -40,7 +40,7 @@ pipelines:
           artifacts:
             - "*.tar"
       - step:
-          name: Deploy to Production
+          name: Push Docker Hub
           deployment: Production
           script:
             - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
