@@ -1,7 +1,4 @@
 FROM nginx
-COPY . / /usr/share/nginx/html/
-COPY . / /var/www/html/
-RUN ls -la /usr/share/nginx/html/*
-RUN ls -la /var/www/html/*
+COPY nginx.conf /etc/nginx/nginx.conf
 
 MAINTAINER Hüseyin Örer <huseyinorer@yandex.com>
