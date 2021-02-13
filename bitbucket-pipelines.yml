@@ -17,8 +17,7 @@ pipelines:
           script:
             - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
             - IMAGE_NAME=mod5-ajax-js
-            - IMAGE=huseyinorer/${IMAGE_NAME}            
-            - docker tag "${IMAGE_NAME}" "${IMAGE}:latest"
+            - IMAGE=huseyinorer/${IMAGE_NAME}
             - docker build . --file Dockerfile --tag ${IMAGE}:latest
             - docker push "${IMAGE}:latest"
           services:
