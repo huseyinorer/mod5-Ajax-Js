@@ -1,3 +1,3 @@
-FROM nginx:1.18.0-0ubuntu1
+FROM ubuntu
 
 MAINTAINER Hüseyin Örer <huseyinorer@yandex.com>
