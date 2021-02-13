@@ -8,46 +8,18 @@
 
 image: atlassian/default-image:2
 
-pipelines:
-  default:
-    - parallel:
-        - step:
-            name: Build and Test
-            script:
-              - IMAGE_NAME=mod5-ajax-js
-              - docker build . --file Dockerfile --tag ${IMAGE_NAME}
-            services:
-              - docker
-            caches:
-              - docker
-        - step:
-            name: Lint the Dockerfile
-            image: hadolint/hadolint:latest-debian
-            script:
-              - hadolint Dockerfile
+pipelines:  
   branches:
     master:
       - step:
-          name: Build and Test
-          script:
-            - IMAGE_NAME=mod5-ajax-js
-            - docker build . --file Dockerfile --tag ${IMAGE_NAME}
-            - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
-          services:
-            - docker
-          caches:
-            - docker
-          artifacts:
-            - "*.tar"
-      - step:
-          name: Push Docker Hub
+          name: Build and Push Docker Hub
           deployment: Production
           script:
             - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
             - IMAGE_NAME=mod5-ajax-js
-            - docker load --input "${IMAGE_NAME}.tar"
-            - IMAGE=huseyinorer/${IMAGE_NAME}
+            - IMAGE=huseyinorer/${IMAGE_NAME}            
             - docker tag "${IMAGE_NAME}" "${IMAGE}:latest"
+            - docker build . --file Dockerfile --tag ${IMAGE_NAME}
             - docker push "${IMAGE}:latest"
           services:
             - docker
