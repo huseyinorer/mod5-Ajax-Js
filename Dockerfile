@@ -1,5 +1,5 @@
 FROM nginx
-ADD ./ /var/www/html/mod5-ajax-js/
+ADD ./* /var/www/html/mod5-ajax-js/
 #COPY ./ /var/www/html/
 COPY nginx.conf /etc/nginx/nginx.conf
 
