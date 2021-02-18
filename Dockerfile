@@ -1,5 +1,4 @@
 FROM nginx:latest
-WORKDIR /mod5
-COPY /mod5-Ajax-js .
+COPY . /usr/share/nginx/html
 
 MAINTAINER Hüseyin Örer <huseyinorer@yandex.com>
