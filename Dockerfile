@@ -1,5 +1,5 @@
 FROM nginx:latest
-#ADD ./* /var/www/html/mod5-ajax-js/
-#COPY ./ /usr/share/nginx/html
+WORKDIR /mod5
+COPY /mod5-ajax-js .
 
 MAINTAINER Hüseyin Örer <huseyinorer@yandex.com>
